@@ -1,4 +1,4 @@
-/*! gridster.js - v0.5.5 - 2014-07-25
+/*! gridster.js - v0.5.5 - 2014-09-11
 * http://gridster.net/
 * Copyright (c) 2014 ducksboard; Licensed MIT */
 
@@ -21,18 +21,18 @@
 }
 
 .ready .gs-w:not(.preview-holder) {
-    -webkit-transition: opacity .3s, left .3s, top .3s;
-    -moz-transition: opacity .3s, left .3s, top .3s;
-    -o-transition: opacity .3s, left .3s, top .3s;
-    transition: opacity .3s, left .3s, top .3s;
+    -webkit-transition: opacity .3s, left .3s, top .3s, -webkit-transform .3s;
+    -moz-transition: opacity .3s, left .3s, top .3s, -moz-transform .3s;
+    -o-transition: opacity .3s, left .3s, top .3s, -o-transform .3s;
+    transition: opacity .3s, left .3s, top .3s, transform .3s;
 }
 
 .ready .gs-w:not(.preview-holder),
 .ready .resize-preview-holder {
-    -webkit-transition: opacity .3s, left .3s, top .3s, width .3s, height .3s;
-    -moz-transition: opacity .3s, left .3s, top .3s, width .3s, height .3s;
-    -o-transition: opacity .3s, left .3s, top .3s, width .3s, height .3s;
-    transition: opacity .3s, left .3s, top .3s, width .3s, height .3s;
+    -webkit-transition: opacity .3s, left .3s, top .3s, -webkit-transform .3s, width .3s, height .3s;
+    -moz-transition: opacity .3s, left .3s, top .3s, -moz-transform .3s, width .3s, height .3s;
+    -o-transition: opacity .3s, left .3s, top .3s, -o-transform .3s, width .3s, height .3s;
+    transition: opacity .3s, left .3s, top .3s, transform .3s, width .3s, height .3s;
 }
 
 .gridster .preview-holder {
@@ -45,10 +45,10 @@
 
 .gridster .player-revert {
     z-index: 10!important;
-    -webkit-transition: left .3s, top .3s!important;
-    -moz-transition: left .3s, top .3s!important;
-    -o-transition: left .3s, top .3s!important;
-    transition:  left .3s, top .3s!important;
+    -webkit-transition: left .3s, top .3s, -webkit-transform .3s!important;
+    -moz-transition: left .3s, top .3s, -moz-transform .3s!important;
+    -o-transition: left .3s, top .3s, -o-transform .3s!important;
+    transition:  left .3s, top .3s, transform .3s!important;
 }
 
 .gridster .dragging,

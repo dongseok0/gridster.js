@@ -336,7 +336,9 @@
         this.options.autoscroll && this.manage_scroll(data);
 
         if (this.options.move_element) {
-            (this.helper ? this.$helper : this.$player).css({
+            (this.helper ? this.$helper : this.$player).css(this.options.useTransform ? {
+                '-webkit-transform' : 'translate3d('+data.position.left+'px, '+data.position.top+'px, 0)'
+            } : {
                 'position': 'absolute',
                 'left' : data.position.left,
                 'top' : data.position.top

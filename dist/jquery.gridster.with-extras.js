@@ -1,4 +1,4 @@
-/*! gridster.js - v0.5.5 - 2014-07-25
+/*! gridster.js - v0.5.5 - 2014-09-11
 * http://gridster.net/
 * Copyright (c) 2014 ducksboard; Licensed MIT */
 
@@ -758,7 +758,9 @@
         this.options.autoscroll && this.manage_scroll(data);
 
         if (this.options.move_element) {
-            (this.helper ? this.$helper : this.$player).css({
+            (this.helper ? this.$helper : this.$player).css(this.options.useTransform ? {
+                '-webkit-transform' : 'translate3d('+data.position.left+'px, '+data.position.top+'px, 0)'
+            } : {
                 'position': 'absolute',
                 'left' : data.position.left,
                 'top' : data.position.top
@@ -898,6 +900,8 @@
     * @param {HTMLElement} el The HTMLelement that contains all the widgets.
     * @param {Object} [options] An Object with all options you want to
     *        overwrite:
+    *    @param {Boolean} [options.useTransform] use translate3d to move 
+    *     elements instead of top, left
     *    @param {HTMLElement|String} [options.widget_selector] Define who will
     *     be the draggable widgets. Can be a CSS Selector String or a
     *     collection of HTMLElements
@@ -1780,6 +1784,7 @@
     fn.draggable = function() {
         var self = this;
         var draggable_options = $.extend(true, {}, this.options.draggable, {
+            useTransform: this.options.useTransform,
             offset_left: this.options.widget_margins[0],
             offset_top: this.options.widget_margins[1],
             container_width: this.cols * this.min_widget_width,
@@ -2008,7 +2013,7 @@
             .attr({
                 'data-col': this.placeholder_grid_data.col,
                 'data-row': this.placeholder_grid_data.row
-            }).css({
+            }).css( this.options.useTransform ? {'-webkit-transform': ''} : {
                 'left': '',
                 'top': ''
             });
@@ -3653,20 +3658,32 @@
         this.generated_stylesheets.push(serialized_opts);
         Gridster.generated_stylesheets.push(serialized_opts);
 
-        /* generate CSS styles for cols */
-        for (i = opts.cols; i >= 0; i--) {
-            styles += (opts.namespace + ' [data-col="'+ (i + 1) + '"] { left:' +
-                ((i * opts.widget_base_dimensions[0]) +
-                (i * opts.widget_margins[0]) +
-                ((i + 1) * opts.widget_margins[0])) + 'px; }\n');
-        }
+        if (this.options.useTransform) {
+            for (i = opts.cols; i >= 0; i--) {
+                for (j = opts.rows; j >= 0; j--) {
+                    styles += (opts.namespace + '[data-col="'+(i+1)+'"][data-row="' + (j + 1) + '"] { -webkit-transform: translate3d( ' +
+                        ((i * opts.widget_base_dimensions[0]) +
+                                ((i*2 + 1) * opts.widget_margins[0]) ) + 'px, '+
+                        ((j * opts.widget_base_dimensions[1]) +
+                                ((j*2 + 1) * opts.widget_margins[1]) ) + 'px, 0);} ');
+                }
+            }
+        } else {
+            /* generate CSS styles for cols */
+            for (i = opts.cols; i >= 0; i--) {
+                styles += (opts.namespace + ' [data-col="'+ (i + 1) + '"] { left:' +
+                    ((i * opts.widget_base_dimensions[0]) +
+                    (i * opts.widget_margins[0]) +
+                    ((i + 1) * opts.widget_margins[0])) + 'px; }\n');
+            }
 
-        /* generate CSS styles for rows */
-        for (i = opts.rows; i >= 0; i--) {
-            styles += (opts.namespace + ' [data-row="' + (i + 1) + '"] { top:' +
-                ((i * opts.widget_base_dimensions[1]) +
-                (i * opts.widget_margins[1]) +
-                ((i + 1) * opts.widget_margins[1]) ) + 'px; }\n');
+            /* generate CSS styles for rows */
+            for (i = opts.rows; i >= 0; i--) {
+                styles += (opts.namespace + ' [data-row="' + (i + 1) + '"] { top:' +
+                    ((i * opts.widget_base_dimensions[1]) +
+                    (i * opts.widget_margins[1]) +
+                    ((i + 1) * opts.widget_margins[1]) ) + 'px; }\n');
+            }    
         }
 
         for (var y = 1; y <= opts.rows; y++) {
